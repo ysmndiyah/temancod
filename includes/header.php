@@ -32,9 +32,15 @@
 
         <?php if (isLoggedIn()): ?>
 
-            <a href="<?= BASE_URL ?>pages/dashboard.php" class="btn-outline-sm">
-                👤 <?= $_SESSION['nama'] ?>
-            </a>
+            <?php if (isAdmin()): ?>
+                <a href="<?= BASE_URL ?>pages/admin_dashboard.php" class="btn-outline-sm">
+                    👑 Admin
+                </a>
+            <?php else: ?>
+                <a href="<?= BASE_URL ?>pages/dashboard.php" class="btn-outline-sm">
+                    👤 <?= $_SESSION['nama'] ?>
+                </a>
+            <?php endif; ?>
 
             <a href="<?= BASE_URL ?>pages/logout.php" class="btn-danger-sm">
                 Keluar
@@ -69,7 +75,11 @@
     <a href="<?= BASE_URL ?>pages/tracking.php">📍 Tracking</a>
     <a href="<?= BASE_URL ?>pages/harga.php">💰 Harga</a>
     <?php if (isLoggedIn()): ?>
-        <a href="<?= BASE_URL ?>pages/dashboard.php">Dashboard</a>
+        <?php if (isAdmin()): ?>
+            <a href="<?= BASE_URL ?>pages/admin_dashboard.php">Dashboard</a>
+        <?php else: ?>
+            <a href="<?= BASE_URL ?>pages/dashboard.php">Dashboard</a>
+        <?php endif; ?>
         <a href="<?= BASE_URL ?>pages/logout.php">Keluar</a>
     <?php else: ?>
         <a href="<?= BASE_URL ?>pages/login.php">Masuk</a>

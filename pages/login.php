@@ -26,26 +26,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-echo "<pre>";
-var_dump($user);
-echo "</pre>";
 
-if ($user) {
-
-    echo "Password yang diketik : " . $password . "<br>";
-    echo "Hash di database : " . $user['password'] . "<br>";
-
-    if (password_verify($password, $user['password'])) {
-        echo "<h2>PASSWORD COCOK</h2>";
-    } else {
-        echo "<h2>PASSWORD TIDAK COCOK</h2>";
-    }
-
-} else {
-    echo "<h2>EMAIL TIDAK DITEMUKAN</h2>";
-}
-
-exit();
 
         if ($user && password_verify($password, $user['password'])) {
 
@@ -64,7 +45,11 @@ exit();
                 }
             }
 
-            redirect('pages/dashboard.php');
+            if ($user['role'] === 'admin') {
+                redirect('pages/admin_dashboard.php');
+            } else {
+                redirect('pages/dashboard.php');
+            }
 
         } else {
             $error = 'Email atau password salah.';

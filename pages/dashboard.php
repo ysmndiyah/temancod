@@ -6,11 +6,11 @@ $pageTitle = 'Dashboard';
 $user_id = $_SESSION['user_id'];
 $total = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE User_id=$user_id")->fetch_assoc()['c'];
 $selesai = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE User_id=$user_id AND Status='selesai'")->fetch_assoc()['c'];
-$berjalan = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE User_id=$user_id AND Status IN ('menunggu','diterima','berjalan')")->fetch_assoc()['c'];
-$pesanan = $conn->query("SELECT p.*, u.nama as companion_nama FROM Pesanan p JOIN Companions c ON p.Companion_id=c.Id JOIN users u ON c.User_id=u.id WHERE p.User_id=$user_id ORDER BY p.Created_at DESC LIMIT 10");
+$berjalan = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE User_id=$user_id AND Status IN ('menunggu_pembayaran','menunggu_verifikasi_admin','companion_sedang_dihubungi','diterima_companion','berjalan')")->fetch_assoc()['c'];
+$pesanan = $conn->query("SELECT p.*, u.nama as companion_nama, u.no_hp as companion_wa FROM Pesanan p JOIN Companions c ON p.Companion_id=c.Id JOIN users u ON c.User_id=u.id WHERE p.User_id=$user_id ORDER BY p.Created_at DESC LIMIT 10");
 if (isset($_GET['batal'])) {
     $pid = intval($_GET['batal']);
-    $conn->query("UPDATE Pesanan SET Status='dibatalkan' WHERE Id=$pid AND User_id=$user_id AND Status='menunggu'");
+    $conn->query("UPDATE Pesanan SET Status='dibatalkan' WHERE Id=$pid AND User_id=$user_id AND Status='menunggu_pembayaran'");
     header("Location: dashboard.php"); exit();
 }
 if ($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['review'])) {
@@ -65,10 +65,23 @@ include '../includes/header.php';
                             <td><?= date('d M Y',strtotime($p['Tanggal_jemput'])) ?></td>
                             <td><?= $p['Durasi_jam'] ?> jam</td>
                             <td><strong><?= formatRupiah($p['Total_harga']) ?></strong></td>
-                            <td><span class="badge badge-<?= $p['Status'] ?>"><?= ucfirst($p['Status']) ?></span></td>
                             <td>
-                                <?php if ($p['Status']==='menunggu'): ?>
+                                <?php 
+                                $statusLabel = ucwords(str_replace('_', ' ', $p['Status']));
+                                if ($p['Status'] === 'diterima_companion') $statusLabel = 'Diterima Companion';
+                                ?>
+                                <span class="badge badge-<?= $p['Status'] ?>"><?= $statusLabel ?></span>
+                            </td>
+                            <td>
+                                <?php if ($p['Status']==='menunggu_pembayaran'): ?>
+                                    <a href="pembayaran.php?id=<?= $p['Id'] ?>" class="btn btn-primary btn-sm">Bayar</a>
                                     <a href="?batal=<?= $p['Id'] ?>" class="btn btn-danger btn-sm" data-confirm="Yakin batalkan?">Batal</a>
+                                <?php elseif (in_array($p['Status'], ['diterima_companion', 'berjalan', 'selesai']) && !empty($p['companion_wa'])): ?>
+                                    <a href="https://wa.me/62<?= ltrim($p['companion_wa'], '0') ?>" target="_blank" class="btn btn-success btn-sm" style="background:#25D366;border:none">WA Companion</a>
+                                    <?php if ($p['Status']==='selesai'): ?>
+                                        <?php $hr=$conn->query("SELECT Id FROM Reviews WHERE Pesanan_id={$p['Id']}")->num_rows; ?>
+                                        <?php if (!$hr): ?><button class="btn btn-sm" style="background:#FFD700;color:#000" onclick="openReview(<?= $p['Id'] ?>,<?= $p['Companion_id'] ?>)">⭐ Ulasan</button><?php else: ?><span style="color:var(--success);font-size:0.82rem">✓ Diulas</span><?php endif; ?>
+                                    <?php endif; ?>
                                 <?php elseif ($p['Status']==='selesai'): ?>
                                     <?php $hr=$conn->query("SELECT Id FROM Reviews WHERE Pesanan_id={$p['Id']}")->num_rows; ?>
                                     <?php if (!$hr): ?><button class="btn btn-sm" style="background:#FFD700;color:#000" onclick="openReview(<?= $p['Id'] ?>,<?= $p['Companion_id'] ?>)">⭐ Ulasan</button><?php else: ?><span style="color:var(--success);font-size:0.82rem">✓ Diulas</span><?php endif; ?>

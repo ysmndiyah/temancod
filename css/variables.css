@@ -1,0 +1,19 @@
+:root {
+    --primary: #E91E8C;
+    --primary-dark: #C2177A;
+    --secondary: #1A237E;
+    --accent: #64B5F6;
+    --bg: #FFF0F8;
+    --card: #FFFFFF;
+    --text: #1A1A2E;
+    --text-muted: #6B7280;
+    --border: #E3E8FF;
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --shadow: 0 4px 20px rgba(233, 30, 140, 0.06);
+    --shadow-lg: 0 10px 30px rgba(233, 30, 140, 0.12);
+    --radius: 12px;      /* Standardized border-radius */
+    --radius-sm: 8px;   /* Standardized small border-radius */
+    --radius-round: 9999px;
+}

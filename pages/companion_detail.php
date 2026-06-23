@@ -20,10 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isLoggedIn()) {
         $error = 'Mohon lengkapi semua data perjalanan.';
     } else {
         $user_id = $_SESSION['user_id'];
-        $stmt = $conn->prepare("INSERT INTO Pesanan (User_id, Companion_id, Tanggal_jemput, Jam_mulai, Durasi_jam, Lokasi_jemput, Tujuan, Keperluan, Total_harga) VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt = $conn->prepare("INSERT INTO Pesanan (User_id, Companion_id, Tanggal_jemput, Jam_mulai, Durasi_jam, Lokasi_jemput, Tujuan, Keperluan, Total_harga, Status) VALUES (?,?,?,?,?,?,?,?,?, 'menunggu_pembayaran')");
         $stmt->bind_param("iississsd", $user_id, $id, $tanggal, $jam, $durasi, $lokasi, $tujuan, $keperluan, $total);
         if ($stmt->execute()) {
-            $success = 'Pesanan berhasil dikirim! Companion akan segera datang menjemputmu.';
+            $pesanan_id = $conn->insert_id;
+            redirect("pages/pembayaran.php?id=$pesanan_id");
         } else {
             $error = 'Gagal mengirim pesanan.';
         }

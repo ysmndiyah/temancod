@@ -1,0 +1,263 @@
+/* ==========================================
+   Media Queries (1024px, 768px, 425px, 375px, 320px)
+   ========================================== */
+
+/* Tablet & Smaller Laptops (<= 1024px) */
+@media (max-width: 1024px) {
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 60px 6%;
+        gap: 40px;
+        min-height: auto;
+    }
+
+    .hero p {
+        margin: 0 auto 36px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-stats {
+        justify-content: center;
+    }
+
+    .hero-image {
+        display: none; /* Hide floating dashboard card on mobile to save vertical space */
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+        padding: 32px 6%;
+    }
+
+    .book-card {
+        position: static;
+        margin-top: 24px;
+    }
+
+    /* Dashboard layout: sidebar hidden off-screen on tablet; toggled by JS */
+    .dashboard-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        height: 100vh;
+        width: 260px;
+        z-index: 100;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Tablet & Mobile Landscape (<= 768px) */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important;
+    }
+
+    .nav-actions {
+        display: none !important; /* Hidden on mobile to prevent overflow; duplicated in mobile menu drawer */
+    }
+
+    .hamburger {
+        display: block !important;
+    }
+
+    .navbar {
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        padding: 0 16px !important;
+    }
+
+    .hero {
+        padding: 40px 6% !important;
+        gap: 40px !important;
+        text-align: center !important;
+    }
+
+    .hero h1 {
+        font-size: clamp(1.6rem, 5vw, 2.2rem) !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
+    }
+
+    .hero p {
+        font-size: 0.95rem !important;
+        max-width: 100% !important;
+        padding: 0 16px !important;
+        text-align: center !important;
+    }
+
+    .hero-buttons {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+
+    .hero-buttons .btn {
+        width: 100% !important;
+    }
+
+    .hero-stats {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        margin-top: 32px !important;
+        padding-top: 24px !important;
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .hero-stats .stat-item {
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .companions-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .companion-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .companion-card-body {
+        padding: 16px !important;
+        text-align: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .companion-rating {
+        justify-content: center !important;
+    }
+
+    .hero-badge {
+        font-size: 0.8rem;
+        padding: 6px 14px;
+    }
+
+    .section {
+        padding: 56px 6% !important;
+    }
+
+    .section-header h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Mobile Medium (<= 425px) */
+@media (max-width: 425px) {
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.45rem;
+    }
+
+    .companions-grid {
+        grid-template-columns: 1fr; /* Single column on narrow screens */
+    }
+
+    .companion-card-body {
+        padding: 16px;
+    }
+
+    .auth-card {
+        padding: 30px 20px;
+    }
+
+    .auth-card h2 {
+        font-size: 1.4rem;
+    }
+
+    .auth-card .subtitle {
+        margin-bottom: 24px;
+    }
+
+    .stat-card {
+        padding: 18px;
+    }
+
+    .card-header-bar {
+        padding: 14px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .card-header-bar .btn {
+        width: 100%;
+    }
+}
+
+/* Mobile Small (<= 375px) */
+@media (max-width: 375px) {
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+
+    .hero-badge {
+        font-size: 0.75rem;
+    }
+
+    .auth-card {
+        padding: 24px 16px;
+    }
+
+    .price-big {
+        font-size: 1.5rem;
+    }
+
+    .book-card {
+        padding: 20px 16px;
+    }
+}
+
+/* Mobile Extra Small (<= 320px) */
+@media (max-width: 320px) {
+    .navbar {
+        padding: 0 4%;
+    }
+
+    .mobile-menu {
+        padding: 12px 4%;
+    }
+
+    .hero h1 {
+        font-size: 1.45rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .auth-card {
+        padding: 20px 12px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
