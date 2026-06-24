@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($pageTitle) ? $pageTitle . ' — ' . SITE_NAME : SITE_NAME ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= BASE_URL ?>css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/style.css?v=20260625">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/forms.css?v=20260625">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/dashboard.css?v=20260625">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/responsive.css?v=20260625">
 </head>
 <body>
 <nav class="navbar">
-
     <a href="<?= BASE_URL ?>" class="nav-logo">
         <span class="logo-icon">🤝</span>
         <span class="logo-text">Teman<strong>COD</strong></span>
@@ -35,6 +37,10 @@
             <?php if (isAdmin()): ?>
                 <a href="<?= BASE_URL ?>pages/admin_dashboard.php" class="btn-outline-sm">
                     👑 Admin
+                </a>
+            <?php elseif (isCompanion()): ?>
+                <a href="<?= BASE_URL ?>pages/companion_dashboard.php" class="btn-outline-sm">
+                    🤝 <?= $_SESSION['nama'] ?>
                 </a>
             <?php else: ?>
                 <a href="<?= BASE_URL ?>pages/dashboard.php" class="btn-outline-sm">
@@ -64,7 +70,7 @@
 
     </div>
 
-    <button class="hamburger" id="hamburger">&#9776;</button>
+    <button class="hamburger" id="hamburger" aria-label="Buka menu" aria-controls="mobileMenu" aria-expanded="false">&#9776;</button>
 
 </nav>
 <div class="mobile-menu" id="mobileMenu">
@@ -77,6 +83,8 @@
     <?php if (isLoggedIn()): ?>
         <?php if (isAdmin()): ?>
             <a href="<?= BASE_URL ?>pages/admin_dashboard.php">Dashboard</a>
+        <?php elseif (isCompanion()): ?>
+            <a href="<?= BASE_URL ?>pages/companion_dashboard.php">Dashboard</a>
         <?php else: ?>
             <a href="<?= BASE_URL ?>pages/dashboard.php">Dashboard</a>
         <?php endif; ?>

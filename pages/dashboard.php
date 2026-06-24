@@ -43,15 +43,26 @@ include '../includes/header.php';
         </nav>
     </aside>
     <main class="main-content">
-        <div class="page-title">Halo, <?= htmlspecialchars(explode(' ',$_SESSION['nama'])[0]) ?>! 👋</div>
-        <div class="page-subtitle">Ringkasan aktivitas pesanan kamu.</div>
+        <div class="welcome-card">
+            <div>
+                <div class="eyebrow">Dashboard kamu</div>
+                <h2>Halo, <?= htmlspecialchars(explode(' ',$_SESSION['nama'])[0]) ?>! 👋</h2>
+                <p>Semoga perjalanan kamu tetap nyaman. Berikut ringkasan pesanan dan tombol cepat untuk melanjutkan aktivitas.</p>
+            </div>
+            <div class="welcome-actions">
+                <a href="companions.php">+ Pesan Baru</a>
+                <a href="#riwayat-pesanan">Lihat Riwayat</a>
+            </div>
+        </div>
+        <div class="page-title">Ringkasan aktivitas</div>
+        <div class="page-subtitle">Kamu memiliki <?= $total ?> pesanan, dengan <?= $berjalan ?> pesanan sedang berjalan atau menunggu tindak lanjut.</div>
         <?php if (isset($_GET['msg']) && $_GET['msg']==='review'): ?><div class="alert alert-success">Ulasan berhasil dikirim!</div><?php endif; ?>
         <div class="stats-row">
             <div class="stat-card"><div class="icon">📋</div><div class="num"><?= $total ?></div><div class="label">Total Pesanan</div></div>
             <div class="stat-card"><div class="icon">✅</div><div class="num"><?= $selesai ?></div><div class="label">Selesai</div></div>
             <div class="stat-card"><div class="icon">⏳</div><div class="num"><?= $berjalan ?></div><div class="label">Berjalan</div></div>
         </div>
-        <div class="card">
+        <div class="card" id="riwayat-pesanan">
             <div class="card-header-bar"><h3>Riwayat Pesanan</h3><a href="companions.php" class="btn btn-primary btn-sm">+ Pesan Baru</a></div>
             <div class="table-wrapper">
                 <?php if ($pesanan->num_rows > 0): ?>
@@ -60,19 +71,20 @@ include '../includes/header.php';
                     <tbody>
                         <?php $no=1; while ($p=$pesanan->fetch_assoc()): ?>
                         <tr>
-                            <td><?= $no++ ?></td>
-                            <td><strong><?= htmlspecialchars($p['companion_nama']) ?></strong></td>
-                            <td><?= date('d M Y',strtotime($p['Tanggal_jemput'])) ?></td>
-                            <td><?= $p['Durasi_jam'] ?> jam</td>
-                            <td><strong><?= formatRupiah($p['Total_harga']) ?></strong></td>
-                            <td>
+                            <td data-label="#"><?= $no++ ?></td>
+                            <td data-label="Companion"><strong><?= htmlspecialchars($p['companion_nama']) ?></strong></td>
+                            <td data-label="Tanggal"><?= date('d M Y',strtotime($p['Tanggal_jemput'])) ?></td>
+                            <td data-label="Durasi"><?= $p['Durasi_jam'] ?> jam</td>
+                            <td data-label="Total"><strong><?= formatRupiah($p['Total_harga']) ?></strong></td>
+                            <td data-label="Status">
                                 <?php 
                                 $statusLabel = ucwords(str_replace('_', ' ', $p['Status']));
                                 if ($p['Status'] === 'diterima_companion') $statusLabel = 'Diterima Companion';
                                 ?>
                                 <span class="badge badge-<?= $p['Status'] ?>"><?= $statusLabel ?></span>
                             </td>
-                            <td>
+                            <td data-label="Aksi">
+                                <div class="table-actions">
                                 <?php if ($p['Status']==='menunggu_pembayaran'): ?>
                                     <a href="pembayaran.php?id=<?= $p['Id'] ?>" class="btn btn-primary btn-sm">Bayar</a>
                                     <a href="?batal=<?= $p['Id'] ?>" class="btn btn-danger btn-sm" data-confirm="Yakin batalkan?">Batal</a>
@@ -86,6 +98,7 @@ include '../includes/header.php';
                                     <?php $hr=$conn->query("SELECT Id FROM Reviews WHERE Pesanan_id={$p['Id']}")->num_rows; ?>
                                     <?php if (!$hr): ?><button class="btn btn-sm" style="background:#FFD700;color:#000" onclick="openReview(<?= $p['Id'] ?>,<?= $p['Companion_id'] ?>)">⭐ Ulasan</button><?php else: ?><span style="color:var(--success);font-size:0.82rem">✓ Diulas</span><?php endif; ?>
                                 <?php else: ?><span style="color:var(--text-muted)">—</span><?php endif; ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endwhile; ?>

@@ -89,7 +89,7 @@ include '../includes/header.php';
                     <td><strong><?= $totalFormatted ?></strong></td>
                     <td><span class="badge <?= $badgeClass ?>"><?= ucwords(str_replace('_', ' ', $p['Status'])) ?></span></td>
                     <td>
-                        <a href="admin_pesanan.php?detail=<?= $p['Id'] ?>" class="btn btn-outline btn-sm">Detail</a>
+                        <a href="admin_detail_pesanan.php?id=<?= $p['Id'] ?>" class="btn btn-outline btn-sm">Detail</a>
                         <?php if ($p['Status'] === 'menunggu_verifikasi_admin'): ?>
                         <a href="admin_verifikasi.php?id=<?= $p['Id'] ?>" class="btn btn-primary btn-sm">Verifikasi Pembayaran</a>
                         <?php endif; ?>

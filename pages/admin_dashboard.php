@@ -16,10 +16,6 @@ $menunggu_verif = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE Status='
 $diproses = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE Status IN ('companion_sedang_dihubungi', 'diterima_companion', 'berjalan')")->fetch_assoc()['c'];
 $selesai = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE Status='selesai'")->fetch_assoc()['c'];
 $total_companion = $conn->query("SELECT COUNT(*) as c FROM Companions")->fetch_assoc()['c'];
-$menunggu_verif = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE Status='menunggu_verifikasi_admin'")->fetch_assoc()['c'];
-$diproses = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE Status IN ('companion_sedang_dihubungi', 'diterima_companion', 'berjalan')")->fetch_assoc()['c'];
-$selesai = $conn->query("SELECT COUNT(*) as c FROM Pesanan WHERE Status='selesai'")->fetch_assoc()['c'];
-$total_companion = $conn->query("SELECT COUNT(*) as c FROM Companions")->fetch_assoc()['c'];
 
 // Ambil Pesanan Terbaru (5 data terakhir)
 $query = "
@@ -104,19 +100,19 @@ include '../includes/header.php';
                     <tbody>
                         <?php while ($p = $pesanan->fetch_assoc()): ?>
                         <tr>
-                            <td>#<?= $p['Id'] ?></td>
-                            <td><strong><?= htmlspecialchars($p['customer_nama']) ?></strong></td>
-                            <td><strong><?= htmlspecialchars($p['companion_nama']) ?></strong></td>
-                            <td><strong><?= formatRupiah($p['Total_harga']) ?></strong></td>
-                            <td>
+                            <td data-label="ID">#<?= $p['Id'] ?></td>
+                            <td data-label="Customer"><strong><?= htmlspecialchars($p['customer_nama']) ?></strong></td>
+                            <td data-label="Companion"><strong><?= htmlspecialchars($p['companion_nama']) ?></strong></td>
+                            <td data-label="Total"><strong><?= formatRupiah($p['Total_harga']) ?></strong></td>
+                            <td data-label="Status">
                                 <?php 
                                 $statusLabel = ucwords(str_replace('_', ' ', $p['Status']));
                                 if ($p['Status'] === 'diterima_companion') $statusLabel = 'Diterima Companion';
                                 ?>
                                 <span class="badge badge-<?= $p['Status'] ?>"><?= $statusLabel ?></span>
                             </td>
-                            <td>
-                                <a href="admin_pesanan.php?detail=<?= $p['Id'] ?>" class="btn btn-outline btn-sm">Detail</a>
+                            <td data-label="Aksi">
+                                <a href="admin_detail_pesanan.php?id=<?= $p['Id'] ?>" class="btn btn-outline btn-sm">Detail</a>
                                 
                                 <?php if ($p['Status'] === 'menunggu_verifikasi_admin'): ?>
                                     <a href="admin_verifikasi.php?id=<?= $p['Id'] ?>" class="btn btn-primary btn-sm">Verifikasi Pembayaran</a>

@@ -47,6 +47,8 @@ $user = $result->fetch_assoc();
 
             if ($user['role'] === 'admin') {
                 redirect('pages/admin_dashboard.php');
+            } elseif ($user['role'] === 'companion') {
+                redirect('pages/companion_dashboard.php');
             } else {
                 redirect('pages/dashboard.php');
             }
@@ -61,32 +63,48 @@ include '../includes/header.php';
 ?>
 
 <div class="auth-wrapper">
-    <div class="auth-card">
-        <h2>Selamat Datang 👋</h2>
-        <p class="subtitle">Masuk ke akun TemanCOD kamu</p>
+    <div class="auth-shell">
+        <div class="auth-illustration">
+            <span class="eyebrow">TemanCOD</span>
+            <h3>Masuk dan lanjutkan perjalanan kamu dengan lebih mudah.</h3>
+            <p>Kelola pesanan, cek status, dan temukan teman perjalanan yang siap membantu kapan saja.</p>
+            <ul class="auth-benefits">
+                <li>⚡ Proses cepat dan aman</li>
+                <li>📍 Pantau status order real-time</li>
+                <li>🤝 Terhubung dengan companion terpercaya</li>
+            </ul>
+        </div>
 
-        <?php if ($error !== '') { ?>
-            <div class="alert alert-danger"><?php echo $error; ?></div>
-        <?php } ?>
+        <div class="auth-card">
+            <h2>Selamat Datang 👋</h2>
+            <p class="subtitle">Masuk ke akun TemanCOD kamu</p>
 
-        <form method="POST" action="">
+            <?php if ($error !== '') { ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+            <?php } ?>
 
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" placeholder="email@gmail.com" required>
-            </div>
+            <form method="POST" action="">
 
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Password kamu" required>
-            </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="email@gmail.com" required>
+                </div>
 
-            <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px">Masuk</button>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="password-input-wrap">
+                        <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Password kamu" required>
+                        <button type="button" class="password-toggle" data-target="loginPassword" aria-label="Tampilkan password" style="background:#fff; box-shadow:0 0 0 1px rgba(15,23,42,0.12);">👁</button>
+                    </div>
+                </div>
 
-        </form>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px">Masuk</button>
 
-        <p class="auth-link">Belum punya akun? <a href="register.php">Daftar gratis</a></p>
-        <p class="auth-link" style="margin-top:8px"><a href="register.php?role=companion">Ingin jadi Companion? Daftar di sini →</a></p>
+            </form>
+
+            <p class="auth-link">Belum punya akun? <a href="register.php">Daftar gratis</a></p>
+            <p class="auth-link" style="margin-top:8px"><a href="register.php?role=companion">Ingin jadi Companion? Daftar di sini →</a></p>
+        </div>
     </div>
 </div>
 
